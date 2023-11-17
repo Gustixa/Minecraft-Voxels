@@ -2,7 +2,7 @@
 
 #include "Include.h"
 
-#include "Object/Camera.h"
+#include "Camera.h"
 
 #include "EBO.h"
 #include "FBO.h"
@@ -12,33 +12,17 @@
 #include "Texture.h"
 #include "Shader_Program.h"
 
-struct Render_Mode {
-	enum Enum {
-		AMBIENT_OCCLUSION,
-		PATHTRACED,
-		ZBUFFER
-	};
-};
-
-inline Render_Mode::Enum switchRenderMode(Render_Mode::Enum i_current) {
-	int currentIntValue = static_cast<int>(i_current) + 1;
-	if (currentIntValue > 2) return static_cast<Render_Mode::Enum>(0);
-	return static_cast<Render_Mode::Enum>(currentIntValue);
-}
-
 struct GLSL_Renderer {
 	vector<GLfloat> vertices;
 	vector<GLuint> faces;
 
-	double iTime;
-	size_t iFrame;
-	uvec2  iResolution;
-	bool   iBidirectional;
-	bool   iCameraChange;
+	double runtime;
+	size_t runframe;
+	uvec2  resolution;
+	bool   reset;
 
 	Camera camera;
 
-	Render_Mode::Enum render_mode;
 	double camera_move_sensitivity;
 	double camera_view_sensitivity;
 	vector<bool> keys;
@@ -52,18 +36,18 @@ struct GLSL_Renderer {
 	VAO main_vao;
 	VBO main_vbo;
 	EBO main_ebo;
-	FBT raw_frame_tex;
-	FBT accumulation_tex;
-	FBO raw_frame_fbo;
-	FBO accumulation_fbo;
-	Shader_Program raw_frame_program;
-	Shader_Program accumulation_program;
-	Shader_Program postprocess_program;
+	FBT raw_tex;
+	FBT acc_tex;
+	FBO raw_fbo;
+	FBO acc_fbo;
+	Shader_Program raw_fp;
+	Shader_Program acc_fp;
+	Shader_Program pp_fp;
 
 	GLSL_Renderer();
 
-	void f_recompile();
-	void f_init();
+	void recompile();
+	void init();
 
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 	static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);

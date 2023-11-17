@@ -3,10 +3,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-File::File() {
-	render_camera = Camera();
-}
-
 Image::Image() {
 }
 

@@ -1,8 +1,6 @@
-#include "Object/Camera.h"
+#include "Camera.h"
 
 Camera::Camera() {
-	focal_length = 0.05;
-	sensor_width = 0.036;
 	width  = 1920;
 	height = 1080;
 

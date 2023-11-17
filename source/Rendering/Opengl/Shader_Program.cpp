@@ -8,7 +8,7 @@ void Shader_Program::f_init(const char* i_fragmentFile) {
 void Shader_Program::f_compile() {
 	glDeleteProgram(ID);
 
-	string vertexCode = f_loadFromFile("./resources/Shaders/Vert.glsl");
+	string vertexCode = f_loadFromFile("./resources/Shaders/vert.glsl");
 	string fragmentCode = f_loadFromFile(frag_source);
 
 	const char* vertexSource = vertexCode.c_str();

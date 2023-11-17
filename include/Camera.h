@@ -5,8 +5,6 @@
 #define EPSILON 0.00001
 
 struct Camera {
-	double focal_length;
-	double sensor_width;
 	uint16_t width;
 	uint16_t height;
 

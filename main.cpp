@@ -2,6 +2,6 @@
 
 int main() {
 	GLSL_Renderer renderer = GLSL_Renderer();
-	renderer.f_init();
+	renderer.init();
 	return 0;
 }

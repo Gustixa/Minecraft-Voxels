@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Operators.h"
-#include "Object/Camera.h"
+#include "Camera.h"
 
 struct Image {
 	uint16_t width;
@@ -12,9 +12,4 @@ struct Image {
 	
 	Image();
 	bool f_load(const string& i_file_path);
-};
-
-struct File {
-	Camera render_camera;
-	File();
 };

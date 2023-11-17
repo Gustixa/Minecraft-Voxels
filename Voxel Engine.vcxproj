@@ -23,7 +23,7 @@
     <ClInclude Include="include\File.h" />
     <ClInclude Include="include\Include.h" />
     <ClInclude Include="include\Operators.h" />
-    <ClInclude Include="include\Object\Camera.h" />
+    <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Rendering\Opengl\EBO.h" />
     <ClInclude Include="include\Rendering\Opengl\FBO.h" />
     <ClInclude Include="include\Rendering\Opengl\FBT.h" />
@@ -38,7 +38,7 @@
     <ClCompile Include="source\Rendering\Opengl\glad.c" />
     <ClCompile Include="source\File.cpp" />
     <ClCompile Include="source\Operators.cpp" />
-    <ClCompile Include="source\Object\Camera.cpp" />
+    <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Rendering\Opengl\EBO.cpp" />
     <ClCompile Include="source\Rendering\Opengl\FBO.cpp" />
     <ClCompile Include="source\Rendering\Opengl\FBT.cpp" />

@@ -1,21 +1,17 @@
 #version 460 core
 
-uniform float iTime;
-uniform uint  iFrame;
-uniform vec2  iResolution;
-uniform uint  iRenderMode;
-uniform bool  iBidirectional;
+uniform float runtime;
+uniform uint  runframe;
+uniform vec2  resolution;
 
-uniform float iCameraFocalLength;
-uniform float iCameraSensorWidth;
-uniform vec3  iCameraPos;
-uniform vec3  iCameraFront;
-uniform vec3  iCameraUp;
-uniform bool  iCameraChange;
+uniform vec3  camera_pos;
+uniform vec3  camera_z;
+uniform vec3  camera_y;
+uniform bool  reset;
 
-uniform sampler2D iLastFrame;
-uniform sampler2D iTextures;
-uniform sampler2D iHdri;
+uniform sampler2D last_frame;
+uniform sampler2D block_textures;
+uniform sampler2D environment_texture;
 
 in vec2 fragCoord;
 in vec2 fragTexCoord;
@@ -370,7 +366,7 @@ vec3 f_EnvironmentHDR(in Ray r) {
 	float u = phi / TWO_PI + 0.5;
 	float v = theta / PI;
 
-	return texture(iHdri, vec2(u,v)).rgb * HDRI_STRENGTH;
+	return texture(environment_texture, vec2(u,v)).rgb * HDRI_STRENGTH;
 }
 
 vec3 f_Radiance(in Ray r){
@@ -410,38 +406,38 @@ vec3 f_Radiance(in Ray r){
 		else if (hit_data.Hit_Mat == SEA_LANTERN) {
 			vec2 boxuv = vec2(0,1) - hit_data.Hit_UV;
 			vec2 uv = fract(boxuv)* vec2(1.0/3.0, 1.0/9.0) + vec2(0, float(9-hit_data.Hit_Mat)/9.0);
-			return rad + brdf * vec3(pow(texture(iTextures, uv).r,  8), pow(texture(iTextures, uv).g,  8), pow(texture(iTextures, uv).b,  8)) * 500;
+			return rad + brdf * vec3(pow(texture(block_textures, uv).r,  8), pow(texture(block_textures, uv).g,  8), pow(texture(block_textures, uv).b,  8)) * 500;
 		}
 		else if (hit_data.Hit_Mat == MAGMA_BLOCK) {
 			vec2 boxuv = vec2(0,1) - hit_data.Hit_UV;
 			vec2 uv = fract(boxuv)* vec2(1.0/3.0, 1.0/9.0) + vec2(0, float(9-hit_data.Hit_Mat)/9.0);
-			return rad + brdf * vec3(pow(texture(iTextures, uv).r,  2), pow(texture(iTextures, uv).g,  2), pow(texture(iTextures, uv).b,  2)) * 2;
+			return rad + brdf * vec3(pow(texture(block_textures, uv).r,  2), pow(texture(block_textures, uv).g,  2), pow(texture(block_textures, uv).b,  2)) * 2;
 		}
 
 		vec2 boxuv = vec2(0,1) - hit_data.Hit_UV;
 		vec2 uv = fract(boxuv)* vec2(1.0/3.0, 1.0/9.0) + vec2(0, float(9-hit_data.Hit_Mat)/9.0);
 
-		float roughness = texture(iTextures, uv).b;
+		float roughness = texture(block_textures, uv).b;
 		r.Ray_Direction = normalize(mix(reflect(r.Ray_Direction, hit_data.Hit_New_Dir), normalize(tangent * normal.x + bitangent * normal.y + hit_data.Hit_New_Dir * normal.z), roughness));
 		r.Ray_Origin = hit_data.Hit_Pos + r.Ray_Direction * EPSILON;
-		brdf *= texture(iTextures, uv).rgb;
+		brdf *= texture(block_textures, uv).rgb;
 	}
 	return rad;
 }
 
 Ray f_CameraRay(vec2 uv) {
-	vec3 projection_center = iCameraPos + iCameraFocalLength * iCameraFront;
-	vec3 projection_u = normalize(cross(iCameraFront, iCameraUp)) * iCameraSensorWidth;
-	vec3 projection_v = normalize(cross(projection_u, iCameraFront)) * (iCameraSensorWidth / 1.0);
-	return Ray(iCameraPos, normalize(projection_center + (projection_u * uv.x) + (projection_v * uv.y) - iCameraPos) );
+	vec3 projection_center = camera_pos + 0.05 * camera_z;
+	vec3 projection_u = normalize(cross(camera_z, camera_y)) * 0.036;
+	vec3 projection_v = normalize(cross(projection_u, camera_z)) * (0.036 / 1.0);
+	return Ray(camera_pos, normalize(projection_center + (projection_u * uv.x) + (projection_v * uv.y) - camera_pos) );
 }
 
 // Main ---------------------------------------------------------------------------------------
 void main() {
-	if (iFrame < SAMPLES) {
-		rng_initialize(gl_FragCoord.xy, iFrame);
-		const vec2 uv = (gl_FragCoord.xy - 1.0 - iResolution.xy /2.0) / max(iResolution.x, iResolution.y);
-		const vec2 pixel_size = 1/ iResolution.xy;
+	if (runframe < SAMPLES) {
+		rng_initialize(gl_FragCoord.xy, runframe);
+		const vec2 uv = (gl_FragCoord.xy - 1.0 - resolution.xy /2.0) / max(resolution.x, resolution.y);
+		const vec2 pixel_size = 1/ resolution.xy;
 
 		vec3 col;
 		for (int x = 0; x < SPP; x++) {
@@ -454,6 +450,6 @@ void main() {
 		fragColor = vec4(col, 1);
 	}
 	else {
-		fragColor = texture(iLastFrame, fragTexCoord);
+		fragColor = texture(last_frame, fragTexCoord);
 	}
 }
