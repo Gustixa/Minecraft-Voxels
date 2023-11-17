@@ -1,6 +1,6 @@
-#include "Rendering/Opengl/GLSL_Renderer.h"
+#include "Rendering/Opengl/Renderer.h"
 
-GLSL_Renderer::GLSL_Renderer() {
+Renderer::Renderer() {
 	vertices = {
 		-1.0f, -1.0f, 0.0f, 0.0f,
 		 1.0f, -1.0f, 1.0f, 0.0f,
@@ -41,7 +41,7 @@ GLSL_Renderer::GLSL_Renderer() {
 	pp_fp  = Shader_Program("PP");
 }
 
-void GLSL_Renderer::recompile() {
+void Renderer::recompile() {
 	raw_fp.f_compile();
 	acc_fp.f_compile();
 	pp_fp.f_compile();
@@ -60,8 +60,8 @@ void GLSL_Renderer::recompile() {
 	runtime = glfwGetTime();
 }
 
-void GLSL_Renderer::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-	GLSL_Renderer* instance = static_cast<GLSL_Renderer*>(glfwGetWindowUserPointer(window));
+void Renderer::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	Renderer* instance = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 	glViewport(0, 0, width, height);
 	instance->resolution.x = width;
 	instance->resolution.y = height;
@@ -77,8 +77,8 @@ void GLSL_Renderer::framebuffer_size_callback(GLFWwindow* window, int width, int
 	instance->acc_fbo.f_unbind();
 }
 
-void GLSL_Renderer::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-	GLSL_Renderer* instance = static_cast<GLSL_Renderer*>(glfwGetWindowUserPointer(window));
+void Renderer::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+	Renderer* instance = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 	if (instance->keys[GLFW_MOUSE_BUTTON_RIGHT]) {
 		double xoffset = xpos - instance->last_mouse.x;
 		double yoffset = instance->last_mouse.y - ypos;
@@ -91,8 +91,8 @@ void GLSL_Renderer::cursor_position_callback(GLFWwindow* window, double xpos, do
 	}
 }
 
-void GLSL_Renderer::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-	GLSL_Renderer* instance = static_cast<GLSL_Renderer*>(glfwGetWindowUserPointer(window));
+void Renderer::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	Renderer* instance = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 	if (action == GLFW_PRESS) {
 		instance->keys[button] = true;
 		if (button == GLFW_MOUSE_BUTTON_RIGHT) {
@@ -113,8 +113,8 @@ void GLSL_Renderer::mouse_button_callback(GLFWwindow* window, int button, int ac
 	}
 }
 
-void GLSL_Renderer::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-	GLSL_Renderer* instance = static_cast<GLSL_Renderer*>(glfwGetWindowUserPointer(window));
+void Renderer::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+	Renderer* instance = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 	if (yoffset < 0) {
 		instance->reset = true;
 		instance->runframe = 0;
@@ -127,8 +127,8 @@ void GLSL_Renderer::scroll_callback(GLFWwindow* window, double xoffset, double y
 	}
 }
 
-void GLSL_Renderer::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	GLSL_Renderer* instance = static_cast<GLSL_Renderer*>(glfwGetWindowUserPointer(window));
+void Renderer::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	Renderer* instance = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 	// Input Handling
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		instance->recompile();
@@ -149,7 +149,7 @@ void GLSL_Renderer::key_callback(GLFWwindow* window, int key, int scancode, int 
 	}
 }
 
-void GLSL_Renderer::init() {
+void Renderer::init() {
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

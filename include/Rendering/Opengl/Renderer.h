@@ -12,7 +12,7 @@
 #include "Texture.h"
 #include "Shader_Program.h"
 
-struct GLSL_Renderer {
+struct Renderer {
 	vector<GLfloat> vertices;
 	vector<GLuint> faces;
 
@@ -44,7 +44,7 @@ struct GLSL_Renderer {
 	Shader_Program acc_fp;
 	Shader_Program pp_fp;
 
-	GLSL_Renderer();
+	Renderer();
 
 	void recompile();
 	void init();

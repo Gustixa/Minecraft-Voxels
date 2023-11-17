@@ -1,7 +1,7 @@
-#include "Rendering/Opengl/GLSL_Renderer.h"
+#include "Rendering/Opengl/Renderer.h"
 
 int main() {
-	GLSL_Renderer renderer = GLSL_Renderer();
+	Renderer renderer = Renderer();
 	renderer.init();
 	return 0;
 }

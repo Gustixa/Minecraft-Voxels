@@ -27,7 +27,7 @@
     <ClInclude Include="include\Rendering\Opengl\EBO.h" />
     <ClInclude Include="include\Rendering\Opengl\FBO.h" />
     <ClInclude Include="include\Rendering\Opengl\FBT.h" />
-    <ClInclude Include="include\Rendering\Opengl\GLSL_Renderer.h" />
+    <ClInclude Include="include\Rendering\Opengl\Renderer.h" />
     <ClInclude Include="include\Rendering\Opengl\Shader_Program.h" />
     <ClInclude Include="include\Rendering\Opengl\Texture.h" />
     <ClInclude Include="include\Rendering\Opengl\VAO.h" />
@@ -42,7 +42,7 @@
     <ClCompile Include="source\Rendering\Opengl\EBO.cpp" />
     <ClCompile Include="source\Rendering\Opengl\FBO.cpp" />
     <ClCompile Include="source\Rendering\Opengl\FBT.cpp" />
-    <ClCompile Include="source\Rendering\Opengl\GLSL_Renderer.cpp" />
+    <ClCompile Include="source\Rendering\Opengl\Renderer.cpp" />
     <ClCompile Include="source\Rendering\Opengl\Shader_Program.cpp" />
     <ClCompile Include="source\Rendering\Opengl\Texture.cpp" />
     <ClCompile Include="source\Rendering\Opengl\VAO.cpp" />
