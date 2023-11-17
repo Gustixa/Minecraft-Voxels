@@ -1,0 +1,7 @@
+.vs/
+x64/
+external/vcpkg/
+enc_temp_folder/
+external/x64-windows/
+vcpkg_installed/
+external/.msbuildstamp-x64-windows.stamp
